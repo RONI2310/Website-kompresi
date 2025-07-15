@@ -21,6 +21,7 @@
             box-shadow: 0 4px 20px rgba(0,0,0,0.1);
             text-align: center;
             width: 420px;
+            position: relative;
         }
 
         h2 {
@@ -98,11 +99,58 @@
         button.compress-btn:hover {
             background-color: #1d4ed8;
         }
+
+        /* Tombol bantuan */
+        .help-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: transparent;
+            border: none;
+            font-size: 22px;
+            cursor: pointer;
+            color: #2563eb;
+        }
+
+        /* Modal bantuan */
+        #helpModal {
+            display: none;
+            position: fixed;
+            z-index: 999;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.4);
+        }
+
+        #helpModalContent {
+            background-color: white;
+            margin: 10% auto;
+            padding: 30px;
+            width: 90%;
+            max-width: 600px;
+            border-radius: 12px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.2);
+        }
+
+        .close-btn {
+            margin-top: 20px;
+            padding: 10px 16px;
+            border: none;
+            background-color: #ef4444;
+            color: white;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
     </style>
 </head>
 <body>
 
 <div class="container">
+    <button class="help-btn" onclick="openHelp()" title="Bantuan">❓</button>
+
     <h2>📄 Kompresi Ijazah</h2>
 
     <!-- Pilih File -->
@@ -130,6 +178,25 @@
     <button class="compress-btn" onclick="compressAndRedirect()">🔧 Kompres Sekarang</button>
 </div>
 
+<!-- Modal Bantuan -->
+<div id="helpModal">
+    <div id="helpModalContent">
+        <h3>📘 Cara Manual Menghitung Kompresi PDF</h3>
+        <ol style="text-align:left;">
+            <li><strong>Hitung Ukuran Asli:</strong> Lihat ukuran file PDF sebelum dikompresi (misalnya 2 MB = 2048 KB).</li>
+            <li><strong>Pilih Level Kompresi:</strong> Contoh: 70% = 0.7.</li>
+            <li><strong>Rumus Ukuran Baru:</strong>  
+                <pre>Ukuran Baru = Ukuran Asli × Level Kompresi</pre>
+            </li>
+            <li><strong>Contoh:</strong>  
+                <pre>2048 KB × 0.7 = 1433.6 KB</pre>
+            </li>
+            <li><strong>Catatan:</strong> Semakin kecil level, semakin tinggi kompresinya.</li>
+        </ol>
+        <button class="close-btn" onclick="closeHelp()">Tutup</button>
+    </div>
+</div>
+
 <script>
     const fileInput = document.getElementById('file-upload');
     const fileInfo = document.getElementById('file-info');
@@ -145,7 +212,7 @@
 
     function setMode(mode) {
         sessionStorage.setItem("brightnessMode", mode);
-        alert("Mode " + (mode === "bright" ? "terang (brightness)" : "gelap (darkness)") + " dipilih.");
+        alert("Mode " + (mode === "bright" ? "terang" : "gelap") + " dipilih.");
     }
 
     function compressAndRedirect() {
@@ -160,6 +227,14 @@
         sessionStorage.setItem("level", level);
 
         window.location.href = "proses.html";
+    }
+
+    function openHelp() {
+        document.getElementById("helpModal").style.display = "block";
+    }
+
+    function closeHelp() {
+        document.getElementById("helpModal").style.display = "none";
     }
 </script>
 
