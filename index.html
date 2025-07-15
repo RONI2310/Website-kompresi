@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Kompresi Ijazah</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f1f5f9;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .container {
+            background: white;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            text-align: center;
+            width: 420px;
+        }
+
+        h2 {
+            color: #2563eb;
+            margin-bottom: 20px;
+        }
+
+        .custom-file-upload {
+            border: 2px dashed #2563eb;
+            display: inline-block;
+            padding: 16px 20px;
+            cursor: pointer;
+            border-radius: 10px;
+            background-color: #eef2ff;
+            color: #2563eb;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+
+        .custom-file-upload:hover {
+            background-color: #dbeafe;
+        }
+
+        input[type="file"] {
+            display: none;
+        }
+
+        .file-info {
+            margin-top: 15px;
+            font-weight: 500;
+            color: #333;
+        }
+
+        select {
+            margin-top: 15px;
+            padding: 10px;
+            border-radius: 8px;
+            width: 100%;
+            font-size: 14px;
+        }
+
+        .brightness-controls {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+
+        .brightness-controls button {
+            flex: 1;
+            margin: 0 5px;
+            padding: 10px;
+            font-size: 14px;
+            border-radius: 8px;
+            border: 1px solid #2563eb;
+            background-color: #e0f2fe;
+            color: #2563eb;
+            cursor: pointer;
+        }
+
+        .brightness-controls button:hover {
+            background-color: #dbeafe;
+        }
+
+        button.compress-btn {
+            margin-top: 20px;
+            background-color: #2563eb;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        button.compress-btn:hover {
+            background-color: #1d4ed8;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>📄 Kompresi Ijazah</h2>
+
+    <!-- Pilih File -->
+    <label for="file-upload" class="custom-file-upload">
+        <input id="file-upload" type="file" accept="application/pdf">
+        📎 Pilih File PDF
+    </label>
+
+    <div id="file-info" class="file-info" style="display: none;"></div>
+
+    <!-- Brightness / Darkness Buttons -->
+    <div class="brightness-controls">
+        <button onclick="setMode('bright')">🔆 Brightness</button>
+        <button onclick="setMode('dark')">🌑 Darkness</button>
+    </div>
+
+    <!-- Level Kompresi -->
+    <select id="level">
+        <option value="0.9">🔵 Rendah (90%)</option>
+        <option value="0.7" selected>🟡 Sedang (70%)</option>
+        <option value="0.5">🔴 Tinggi (50%)</option>
+    </select>
+
+    <!-- Kompres Sekarang -->
+    <button class="compress-btn" onclick="compressAndRedirect()">🔧 Kompres Sekarang</button>
+</div>
+
+<script>
+    const fileInput = document.getElementById('file-upload');
+    const fileInfo = document.getElementById('file-info');
+    let selectedFile = null;
+
+    fileInput.addEventListener('change', function () {
+        selectedFile = this.files[0];
+        if (selectedFile) {
+            fileInfo.textContent = "📘 File terpilih: " + selectedFile.name;
+            fileInfo.style.display = "block";
+        }
+    });
+
+    function setMode(mode) {
+        sessionStorage.setItem("brightnessMode", mode);
+        alert("Mode " + (mode === "bright" ? "terang (brightness)" : "gelap (darkness)") + " dipilih.");
+    }
+
+    function compressAndRedirect() {
+        if (!selectedFile) {
+            alert("❗ Silakan pilih file PDF terlebih dahulu.");
+            return;
+        }
+
+        const level = parseFloat(document.getElementById("level").value);
+        sessionStorage.setItem("fileName", selectedFile.name);
+        sessionStorage.setItem("fileSize", selectedFile.size);
+        sessionStorage.setItem("level", level);
+
+        window.location.href = "proses.html";
+    }
+</script>
+
+</body>
+</html>
